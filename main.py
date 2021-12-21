@@ -1,3 +1,4 @@
+#pip install discord-py escpos
 from discord import channel
 from escpos.printer import Network  
 import discord
