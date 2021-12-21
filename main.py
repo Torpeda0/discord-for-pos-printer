@@ -36,5 +36,8 @@ async def on_message(message):
                 print("Message detected : " + wiadomosc + "    (" "Time: " + str(message.created_at)[:-7] + ")")
                 printer.text("@" + message.author.name + "#" + message.author.discriminator + "   " + str(message.created_at)[:-7] +" : \n")
                 printer.text(wiadomosc + "\n")
+        else: 
+            await message.channel.send("No paper in the printer")
+            print("No paper in the printer")
 
 client.run(token)
