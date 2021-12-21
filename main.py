@@ -2,11 +2,10 @@ from discord import channel
 from escpos.printer import Network  
 import discord
 
-#Wpisz ID kanałów
-channel_id =  
-#Wpisz IP drukarki
+channel_id = ""
+
 printer_ip = ""
-#Wpisz Token bota
+
 token = ""
 
 client= discord.Client()
@@ -19,18 +18,21 @@ async def on_ready():
     await client.change_presence(
         activity=discord.Activity(
             type=discord.ActivityType.playing,
-            name="drukowanie twych wiadomości"
+            name="printing your messages"
         )
     )
 
 @client.event
 async def on_message(message):
     if (message.channel.id == channel_id):
-        time = str(message.created_at)
-        print("wykryto wiadomość : " + message.content + "(" "Godzina : " + time + ")")
-        printer.text("@" + message.author.name + "#" + message.author.discriminator + print(time[:-7]) +" : \n")
-        printer.text(message.content + "\n")
-        printer.cut()
-
+        wiadomosc = message.content.replace("\n", " ")
+        if len(wiadomosc) > 128:
+            print("Message detected (Shortened to 128 characters.) : " + wiadomosc[:128] + "    (" "time : " + str(message.created_at)[:-7] + ")")
+            printer.text("@" + message.author.name + "#" + message.author.discriminator + "   " + str(message.created_at)[:-7] +" : \n")
+            printer.text(wiadomosc[:128] + "\n")
+        else: 
+            print("Message detected : " + wiadomosc + "    (" "Time: " + str(message.created_at)[:-7] + ")")
+            printer.text("@" + message.author.name + "#" + message.author.discriminator + "   " + str(message.created_at)[:-7] +" : \n")
+            printer.text(wiadomosc + "\n")
 
 client.run(token)
